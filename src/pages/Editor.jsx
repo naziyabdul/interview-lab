@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Editor from '@monaco-editor/react';
 
-function Editor() {
+function CodeEditor() {
   const location = useLocation();
   const navigate = useNavigate();
   const question = location.state?.question;
+  const [code, setCode] = useState('// Write your solution here...');
+  const [language, setLanguage] = useState('javascript');
 
   if(!question) {
     return (
@@ -23,7 +26,7 @@ function Editor() {
 
   return (
     <div style={{backgroundColor:'#1e1e2e',minHeight:'100vh',color:'white',fontFamily:'Arial',padding:'30px'}}>
-      
+
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
         <h1 style={{fontSize:'1.8rem'}}>Interview Lab</h1>
         <button
@@ -46,7 +49,7 @@ function Editor() {
           </div>
           <h2 style={{marginBottom:'15px'}}>{question.title}</h2>
           <p style={{color:'#ccc',lineHeight:'1.6'}}>{question.description}</p>
-          
+
           <div style={{marginTop:'20px',backgroundColor:'#1e1e2e',padding:'15px',borderRadius:'10px'}}>
             <p style={{color:'#888',marginBottom:'5px'}}>Sample Input:</p>
             <p style={{color:'#22c55e'}}>{question.sample_input}</p>
@@ -65,13 +68,37 @@ function Editor() {
         </div>
 
         <div style={{flex:1,backgroundColor:'#2d2d3f',borderRadius:'15px',padding:'25px'}}>
-          <h3 style={{marginBottom:'15px'}}>Write Your Code Here</h3>
-          <textarea
-            style={{width:'100%',height:'350px',backgroundColor:'#1e1e2e',color:'#22c55e',border:'1px solid #444',borderRadius:'10px',padding:'15px',fontSize:'1rem',fontFamily:'monospace',resize:'none'}}
-            placeholder="// Write your solution here...">
-          </textarea>
+          
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'15px'}}>
+            <h3>Write Your Code</h3>
+            <select
+              value={language}
+              onChange={e => setLanguage(e.target.value)}
+              style={{padding:'8px',borderRadius:'8px',backgroundColor:'#1e1e2e',color:'white',border:'1px solid #7c3aed'}}>
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="c">C</option>
+            </select>
+          </div>
+
+          <Editor
+            height="400px"
+            language={language}
+            value={code}
+            onChange={value => setCode(value)}
+            theme="vs-dark"
+            options={{
+              fontSize: 14,
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+            }}
+          />
+
           <button
-            onClick={() => navigate('/feedback')}
+            onClick={() => navigate('/feedback', { state: { code, question, language } })}
             style={{marginTop:'15px',padding:'12px 30px',backgroundColor:'#22c55e',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',width:'100%'}}>
             Submit Solution
           </button>
@@ -82,4 +109,4 @@ function Editor() {
   );
 }
 
-export default Editor;
+export default CodeEditor;
