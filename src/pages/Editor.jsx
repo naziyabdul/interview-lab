@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
+import { runCode } from '../judge0';
 
 function CodeEditor() {
   const location = useLocation();
   const navigate = useNavigate();
   const question = location.state?.question;
   const [code, setCode] = useState('// Write your solution here...');
+  const [isFirstEdit, setIsFirstEdit] = useState(true);
+
+  const handleCodeChange = (value) => {
+  if(isFirstEdit) {
+    setCode('');
+    setIsFirstEdit(false);
+  } else {
+    setCode(value);
+  }
+};  
   const [language, setLanguage] = useState('javascript');
+  const [output, setOutput] = useState('');
+  const [loading, setLoading] = useState(false);
 
   if(!question) {
     return (
@@ -23,6 +36,21 @@ function CodeEditor() {
       </div>
     );
   }
+
+  const handleRun = async () => {
+    setLoading(true);
+    setOutput('Running...');
+    try {
+      const result = await runCode(code, language);
+      if(result.stdout) setOutput(result.stdout);
+      else if(result.stderr) setOutput('Error: ' + result.stderr);
+      else if(result.compile_output) setOutput('Compile Error: ' + result.compile_output);
+      else setOutput('No output');
+    } catch(err) {
+      setOutput('Error: ' + err.message);
+    }
+    setLoading(false);
+  };
 
   return (
     <div style={{backgroundColor:'#1e1e2e',minHeight:'100vh',color:'white',fontFamily:'Arial',padding:'30px'}}>
@@ -68,7 +96,7 @@ function CodeEditor() {
         </div>
 
         <div style={{flex:1,backgroundColor:'#2d2d3f',borderRadius:'15px',padding:'25px'}}>
-          
+
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'15px'}}>
             <h3>Write Your Code</h3>
             <select
@@ -83,27 +111,42 @@ function CodeEditor() {
             </select>
           </div>
 
-          <Editor
-            height="400px"
+         <Editor
+            height="300px"
             language={language}
             value={code}
-            onChange={value => setCode(value)}
+            onChange={handleCodeChange}
             theme="vs-dark"
             options={{
-              fontSize: 14,
+            fontSize: 14,
               minimap: { enabled: false },
               scrollBeyondLastLine: false,
               automaticLayout: true,
             }}
           />
 
-          <button
-            onClick={() => navigate('/feedback', { state: { code, question, language } })}
-            style={{marginTop:'15px',padding:'12px 30px',backgroundColor:'#22c55e',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',width:'100%'}}>
-            Submit Solution
-          </button>
-        </div>
+          <div style={{display:'flex',gap:'10px',marginTop:'15px'}}>
+            <button
+              onClick={handleRun}
+              disabled={loading}
+              style={{flex:1,padding:'12px',backgroundColor:'#3b82f6',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem'}}>
+              {loading ? 'Running...' : 'Run Code'}
+            </button>
+            <button
+              onClick={() => navigate('/feedback', { state: { code, question, language } })}
+              style={{flex:1,padding:'12px',backgroundColor:'#22c55e',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem'}}>
+              Submit
+            </button>
+          </div>
 
+          <div style={{marginTop:'15px',backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',minHeight:'100px'}}>
+            <p style={{color:'#888',marginBottom:'8px'}}>Output:</p>
+            <pre style={{color:'#22c55e',margin:0,fontFamily:'monospace'}}>
+              {output || 'Click Run Code to see output...'}
+            </pre>
+          </div>
+
+        </div>
       </div>
     </div>
   );
