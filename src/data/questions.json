@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "title": "Reverse a String",
+    "difficulty": "Easy",
+    "topic": "Strings",
+    "description": "Write a program to reverse a given string.",
+    "sample_input": "hello",
+    "sample_output": "olleh",
+    "hints": ["Use a loop", "Try two pointer approach"]
+  },
+  {
+    "id": 2,
+    "title": "Find Largest Number",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "description": "Find the largest number in a given array.",
+    "sample_input": "[1, 5, 3, 9, 2]",
+    "sample_output": "9",
+    "hints": ["Use a loop", "Keep track of maximum"]
+  },
+  {
+    "id": 3,
+    "title": "Check Palindrome",
+    "difficulty": "Easy",
+    "topic": "Strings",
+    "description": "Check if a given string is a palindrome.",
+    "sample_input": "racecar",
+    "sample_output": "true",
+    "hints": ["Compare first and last characters"]
+  },
+  {
+    "id": 4,
+    "title": "Sum of Array",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "description": "Find the sum of all numbers in an array.",
+    "sample_input": "[1, 2, 3, 4, 5]",
+    "sample_output": "15",
+    "hints": ["Use a loop", "Keep adding to sum"]
+  },
+  {
+    "id": 5,
+    "title": "Count Vowels",
+    "difficulty": "Easy",
+    "topic": "Strings",
+    "description": "Count the number of vowels in a string.",
+    "sample_input": "hello world",
+    "sample_output": "3",
+    "hints": ["Check each character", "a e i o u are vowels"]
+  },
+  {
+    "id": 6,
+    "title": "Fibonacci Series",
+    "difficulty": "Easy",
+    "topic": "Numbers",
+    "description": "Print first n numbers of fibonacci series.",
+    "sample_input": "7",
+    "sample_output": "0 1 1 2 3 5 8",
+    "hints": ["Each number is sum of previous two"]
+  },
+  {
+    "id": 7,
+    "title": "Check Prime Number",
+    "difficulty": "Easy",
+    "topic": "Numbers",
+    "description": "Check if a given number is prime or not.",
+    "sample_input": "7",
+    "sample_output": "true",
+    "hints": ["Divide by numbers from 2 to n-1"]
+  },
+  {
+    "id": 8,
+    "title": "Factorial of Number",
+    "difficulty": "Easy",
+    "topic": "Numbers",
+    "description": "Find the factorial of a given number.",
+    "sample_input": "5",
+    "sample_output": "120",
+    "hints": ["Multiply from 1 to n"]
+  },
+  {
+    "id": 9,
+    "title": "Remove Duplicates",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "description": "Remove duplicate elements from an array.",
+    "sample_input": "[1, 2, 2, 3, 3, 4]",
+    "sample_output": "[1, 2, 3, 4]",
+    "hints": ["Use a Set", "Check if element already exists"]
+  },
+  {
+    "id": 10,
+    "title": "Reverse an Array",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "description": "Reverse the elements of an array.",
+    "sample_input": "[1, 2, 3, 4, 5]",
+    "sample_output": "[5, 4, 3, 2, 1]",
+    "hints": ["Use two pointers", "Swap elements"]
+  },
+  {
+    "id": 11,
+    "title": "Binary Search",
+    "difficulty": "Medium",
+    "topic": "Searching",
+    "description": "Implement binary search on a sorted array.",
+    "sample_input": "[1, 3, 5, 7, 9], target = 7",
+    "sample_output": "3",
+    "hints": ["Divide array in half", "Compare middle element"]
+  },
+  {
+    "id": 12,
+    "title": "Linked List Reversal",
+    "difficulty": "Medium",
+    "topic": "Linked Lists",
+    "description": "Reverse a singly linked list.",
+    "sample_input": "1 -> 2 -> 3 -> 4 -> 5",
+    "sample_output": "5 -> 4 -> 3 -> 2 -> 1",
+    "hints": ["Use three pointers", "prev, curr, next"]
+  },
+  {
+    "id": 13,
+    "title": "Valid Parentheses",
+    "difficulty": "Medium",
+    "topic": "Stacks",
+    "description": "Check if parentheses in a string are valid.",
+    "sample_input": "({[]})",
+    "sample_output": "true",
+    "hints": ["Use a stack", "Push opening, pop closing"]
+  },
+  {
+    "id": 14,
+    "title": "Two Sum",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "description": "Find two numbers in array that add up to target.",
+    "sample_input": "[2, 7, 11, 15], target = 9",
+    "sample_output": "[0, 1]",
+    "hints": ["Use a HashMap", "Store complement"]
+  },
+  {
+    "id": 15,
+    "title": "Merge Sort",
+    "difficulty": "Medium",
+    "topic": "Sorting",
+    "description": "Implement merge sort algorithm.",
+    "sample_input": "[5, 2, 8, 1, 9]",
+    "sample_output": "[1, 2, 5, 8, 9]",
+    "hints": ["Divide and conquer", "Merge two sorted arrays"]
+  },
+  {
+    "id": 16,
+    "title": "Maximum Subarray",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "description": "Find the maximum sum subarray.",
+    "sample_input": "[-2, 1, -3, 4, -1, 2, 1, -5, 4]",
+    "sample_output": "6",
+    "hints": ["Kadane's algorithm", "Track current and max sum"]
+  },
+  {
+    "id": 17,
+    "title": "Height of Binary Tree",
+    "difficulty": "Medium",
+    "topic": "Trees",
+    "description": "Find the height of a binary tree.",
+    "sample_input": "[3, 9, 20, null, null, 15, 7]",
+    "sample_output": "3",
+    "hints": ["Use recursion", "Max of left and right height"]
+  },
+  {
+    "id": 18,
+    "title": "Level Order Traversal",
+    "difficulty": "Medium",
+    "topic": "Trees",
+    "description": "Print binary tree level by level.",
+    "sample_input": "[3, 9, 20, null, null, 15, 7]",
+    "sample_output": "[[3], [9, 20], [15, 7]]",
+    "hints": ["Use a queue", "BFS approach"]
+  },
+  {
+    "id": 19,
+    "title": "Number of Islands",
+    "difficulty": "Medium",
+    "topic": "Graphs",
+    "description": "Count number of islands in a grid.",
+    "sample_input": "[[1,1,0],[0,1,0],[0,0,1]]",
+    "sample_output": "2",
+    "hints": ["Use DFS or BFS", "Mark visited cells"]
+  },
+  {
+    "id": 20,
+    "title": "Longest Common Prefix",
+    "difficulty": "Medium",
+    "topic": "Strings",
+    "description": "Find longest common prefix among strings.",
+    "sample_input": "[flower, flow, flight]",
+    "sample_output": "fl",
+    "hints": ["Compare character by character"]
+  },
+  {
+    "id": 21,
+    "title": "Trapping Rain Water",
+    "difficulty": "Hard",
+    "topic": "Arrays",
+    "description": "Calculate how much rain water can be trapped.",
+    "sample_input": "[0,1,0,2,1,0,1,3,2,1,2,1]",
+    "sample_output": "6",
+    "hints": ["Use two pointers", "Track left and right max"]
+  },
+  {
+    "id": 22,
+    "title": "Word Break Problem",
+    "difficulty": "Hard",
+    "topic": "Dynamic Programming",
+    "description": "Check if string can be segmented into dictionary words.",
+    "sample_input": "leetcode, [leet, code]",
+    "sample_output": "true",
+    "hints": ["Use dynamic programming", "Check all substrings"]
+  },
+  {
+    "id": 23,
+    "title": "Serialize Binary Tree",
+    "difficulty": "Hard",
+    "topic": "Trees",
+    "description": "Serialize and deserialize a binary tree.",
+    "sample_input": "[1, 2, 3, null, null, 4, 5]",
+    "sample_output": "1,2,3,null,null,4,5",
+    "hints": ["Use BFS", "Handle null nodes"]
+  },
+  {
+    "id": 24,
+    "title": "Longest Increasing Subsequence",
+    "difficulty": "Hard",
+    "topic": "Dynamic Programming",
+    "description": "Find length of longest increasing subsequence.",
+    "sample_input": "[10, 9, 2, 5, 3, 7, 101, 18]",
+    "sample_output": "4",
+    "hints": ["Use DP array", "Check all previous elements"]
+  },
+  {
+    "id": 25,
+    "title": "Dijkstra Shortest Path",
+    "difficulty": "Hard",
+    "topic": "Graphs",
+    "description": "Find shortest path between nodes in a graph.",
+    "sample_input": "graph with weights",
+    "sample_output": "shortest distances array",
+    "hints": ["Use priority queue", "Greedy approach"]
+  },
+  {
+    "id": 26,
+    "title": "Median of Two Arrays",
+    "difficulty": "Hard",
+    "topic": "Arrays",
+    "description": "Find median of two sorted arrays.",
+    "sample_input": "[1,3], [2]",
+    "sample_output": "2.0",
+    "hints": ["Binary search approach", "Partition arrays"]
+  },
+  {
+    "id": 27,
+    "title": "Regular Expression Matching",
+    "difficulty": "Hard",
+    "topic": "Strings",
+    "description": "Implement regular expression matching with . and *",
+    "sample_input": "s = aa, p = a*",
+    "sample_output": "true",
+    "hints": ["Use dynamic programming", "Handle . and * separately"]
+  },
+  {
+    "id": 28,
+    "title": "N Queens Problem",
+    "difficulty": "Hard",
+    "topic": "Graphs",
+    "description": "Place N queens on NxN board without attacking each other.",
+    "sample_input": "4",
+    "sample_output": "[[.Q..],[...Q],[Q...],[..Q.]]",
+    "hints": ["Use backtracking", "Check row col diagonal"]
+  },
+  {
+    "id": 29,
+    "title": "Knapsack Problem",
+    "difficulty": "Hard",
+    "topic": "Dynamic Programming",
+    "description": "Find maximum value in knapsack with weight limit.",
+    "sample_input": "weights=[1,2,3], values=[6,10,12], W=5",
+    "sample_output": "22",
+    "hints": ["Use 2D DP table", "Include or exclude each item"]
+  },
+  {
+    "id": 30,
+    "title": "Minimum Window Substring",
+    "difficulty": "Hard",
+    "topic": "Strings",
+    "description": "Find minimum window substring containing all characters.",
+    "sample_input": "s = ADOBECODEBANC, t = ABC",
+    "sample_output": "BANC",
+    "hints": ["Sliding window", "Use two pointers"]
+  }
+]
