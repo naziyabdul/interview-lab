@@ -20,7 +20,7 @@ function Feedback() {
       <div style={{display:'flex',gap:'20px'}}>
 
         <div style={{flex:1,backgroundColor:'#2d2d3f',borderRadius:'15px',padding:'25px'}}>
-          <h2 style={{marginBottom:'20px'}}>📝 Your Submission</h2>
+          <h2 style={{marginBottom:'20px'}}>Your Submission</h2>
           <div style={{marginBottom:'15px'}}>
             <p style={{color:'#888',marginBottom:'5px'}}>Question:</p>
             <p style={{color:'white',fontSize:'1.1rem'}}>{question?.title}</p>
@@ -38,7 +38,7 @@ function Feedback() {
         </div>
 
         <div style={{flex:1,backgroundColor:'#2d2d3f',borderRadius:'15px',padding:'25px'}}>
-          <h2 style={{marginBottom:'20px'}}>🤖 AI Feedback</h2>
+          <h2 style={{marginBottom:'20px'}}>AI Feedback</h2>
           <div style={{backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'20px',textAlign:'center'}}>
             <p style={{color:'#888',fontSize:'1.1rem'}}>
               AI Feedback coming soon!
@@ -49,7 +49,7 @@ function Feedback() {
           </div>
 
           <div style={{marginTop:'20px'}}>
-            <h3 style={{marginBottom:'15px'}}>📊 Quick Stats</h3>
+            <h3 style={{marginBottom:'15px'}}>Quick Stats</h3>
             <div style={{display:'flex',gap:'10px'}}>
               <div style={{flex:1,backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',textAlign:'center'}}>
                 <p style={{color:'#888',fontSize:'0.8rem'}}>Lines of Code</p>
@@ -75,7 +75,7 @@ function Feedback() {
           <button
             onClick={() => navigate('/mode')}
             style={{marginTop:'20px',padding:'12px',backgroundColor:'#7c3aed',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',width:'100%'}}>
-            Practice Again 🚀
+            Practice Again
           </button>
         </div>
 
