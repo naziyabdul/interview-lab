@@ -15,7 +15,7 @@ function Timer({ duration, onTimeUp }) {
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [onTimeUp]);
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;

@@ -1,10 +1,26 @@
-import React from 'react';
+import { getAIFeedback } from '../gemini';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 function Feedback() {
   const location = useLocation();
   const navigate = useNavigate();
   const { code, question, language } = location.state || {};
+  const [feedback, setFeedback] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getFeedback = async () => {
+      try {
+        const data = await getAIFeedback(code, language, question);
+        setFeedback(data);
+      } catch(err) {
+        console.error('Feedback error:', err);
+      }
+      setLoading(false);
+    };
+    getFeedback();
+  }, []);
 
   return (
     <div style={{backgroundColor:'#1e1e2e',minHeight:'100vh',color:'white',fontFamily:'Arial',padding:'30px'}}>
@@ -38,44 +54,60 @@ function Feedback() {
         </div>
 
         <div style={{flex:1,backgroundColor:'#2d2d3f',borderRadius:'15px',padding:'25px'}}>
-          <h2 style={{marginBottom:'20px'}}>AI Feedback</h2>
-          <div style={{backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'20px',textAlign:'center'}}>
-            <p style={{color:'#888',fontSize:'1.1rem'}}>
-              AI Feedback coming soon!
-            </p>
-            <p style={{color:'#555',marginTop:'10px'}}>
-              We will add AI evaluation in Day 9!
-            </p>
-          </div>
+          <h2 style={{marginBottom:'20px'}}>🤖 AI Feedback</h2>
 
-          <div style={{marginTop:'20px'}}>
-            <h3 style={{marginBottom:'15px'}}>Quick Stats</h3>
-            <div style={{display:'flex',gap:'10px'}}>
-              <div style={{flex:1,backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',textAlign:'center'}}>
-                <p style={{color:'#888',fontSize:'0.8rem'}}>Lines of Code</p>
-                <p style={{color:'#22c55e',fontSize:'1.5rem',fontWeight:'bold'}}>
-                  {code?.split('\n').length || 0}
-                </p>
-              </div>
-              <div style={{flex:1,backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',textAlign:'center'}}>
-                <p style={{color:'#888',fontSize:'0.8rem'}}>Difficulty</p>
-                <p style={{color:'#7c3aed',fontSize:'1.5rem',fontWeight:'bold'}}>
-                  {question?.difficulty || 'N/A'}
-                </p>
-              </div>
-              <div style={{flex:1,backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',textAlign:'center'}}>
-                <p style={{color:'#888',fontSize:'0.8rem'}}>Topic</p>
-                <p style={{color:'#fbbf24',fontSize:'1rem',fontWeight:'bold'}}>
-                  {question?.topic || 'N/A'}
-                </p>
-              </div>
+          {loading ? (
+            <div style={{textAlign:'center',padding:'40px'}}>
+              <p style={{color:'#888',fontSize:'1.1rem'}}>🤖 AI is evaluating your code...</p>
+              <p style={{color:'#555',marginTop:'10px'}}>Please wait a moment!</p>
             </div>
-          </div>
+          ) : feedback ? (
+            <div>
+              <div style={{textAlign:'center',marginBottom:'20px'}}>
+                <p style={{color:'#888',marginBottom:'5px'}}>Score</p>
+                <p style={{fontSize:'3rem',fontWeight:'bold',color: feedback.score >= 7 ? '#22c55e' : feedback.score >= 5 ? '#fbbf24' : '#ef4444'}}>
+                  {feedback.score}/10
+                </p>
+              </div>
+
+              <div style={{backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',marginBottom:'15px'}}>
+                <p style={{color:'#22c55e',marginBottom:'5px'}}>✅ What is Good:</p>
+                <p style={{color:'#ccc'}}>{feedback.good}</p>
+              </div>
+
+              <div style={{backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',marginBottom:'15px'}}>
+                <p style={{color:'#fbbf24',marginBottom:'5px'}}>💡 Improvements:</p>
+                <p style={{color:'#ccc'}}>{feedback.improve}</p>
+              </div>
+
+              <div style={{display:'flex',gap:'10px',marginBottom:'15px'}}>
+                <div style={{flex:1,backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',textAlign:'center'}}>
+                  <p style={{color:'#888',fontSize:'0.8rem'}}>Time Complexity</p>
+                  <p style={{color:'#7c3aed',fontWeight:'bold'}}>{feedback.timeComplexity}</p>
+                </div>
+                <div style={{flex:1,backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px',textAlign:'center'}}>
+                  <p style={{color:'#888',fontSize:'0.8rem'}}>Space Complexity</p>
+                  <p style={{color:'#7c3aed',fontWeight:'bold'}}>{feedback.spaceComplexity}</p>
+                </div>
+              </div>
+
+              {feedback.optimizedSolution && (
+                <div style={{backgroundColor:'#1e1e2e',borderRadius:'10px',padding:'15px'}}>
+                  <p style={{color:'#888',marginBottom:'5px'}}>🚀 Optimized Solution:</p>
+                  <pre style={{color:'#22c55e',fontSize:'0.9rem',overflow:'auto'}}>
+                    {feedback.optimizedSolution}
+                  </pre>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p style={{color:'#ef4444'}}>Could not get feedback. Please try again!</p>
+          )}
 
           <button
             onClick={() => navigate('/mode')}
             style={{marginTop:'20px',padding:'12px',backgroundColor:'#7c3aed',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',width:'100%'}}>
-            Practice Again
+            Practice Again 🚀
           </button>
         </div>
 
