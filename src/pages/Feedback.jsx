@@ -14,6 +14,17 @@ function Feedback() {
       try {
         const data = await getAIFeedback(code, language, question);
         setFeedback(data);
+
+        const session = {
+           question: question.title,
+           topic: question.topic,
+           difficulty: question.difficulty,
+           language: language,
+           score: data.score,
+           date: new Date().toLocaleDateString()
+       };
+       const existing = JSON.parse(localStorage.getItem('interviewSessions') || '[]');
+       localStorage.setItem('interviewSessions', JSON.stringify([...existing, session]));
       } catch(err) {
         console.error('Feedback error:', err);
       }
