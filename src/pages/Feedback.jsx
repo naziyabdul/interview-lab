@@ -31,7 +31,7 @@ function Feedback() {
       setLoading(false);
     };
     getFeedback();
-  }, []);
+   }, [code, language, question]);
 
   return (
     <div style={{backgroundColor:'#1e1e2e',minHeight:'100vh',color:'white',fontFamily:'Arial',padding:'30px'}}>
