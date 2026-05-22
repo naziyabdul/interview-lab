@@ -34,7 +34,7 @@ function CodeEditor() {
       else if(result.stderr) setOutput('Error: ' + result.stderr);
       else setOutput('No output');
     } catch(err) {
-      setOutput('Error: ' + err.message);
+      setOutput('⚠️ Run Code works only in local development!\nPlease run the backend server locally.');
     }
     setLoading(false);
   };
