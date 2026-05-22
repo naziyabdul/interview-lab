@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
-import { io } from 'socket.io-client';
-
-const socket = io('http://localhost:5000');
+import { db, ref, onValue, set } from '../firebase';
 
 function Collab() {
   const navigate = useNavigate();
@@ -16,42 +14,43 @@ function Collab() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    socket.on('code-update', (newCode) => {
-      setCode(newCode);
-    });
-    socket.on('user-count', (count) => {
-      setUserCount(count);
-    });
-    return () => {
-      socket.off('code-update');
-      socket.off('user-count');
-    };
-  }, []);
+    if(!joined) return;
 
-  const joinRoom = () => {
-    if(!roomId) return alert('Please enter a room ID!');
-    socket.emit('join-room', roomId);
-    socket.on('room-joined', ({ code, users }) => {
-      setCode(code || '// Collaborative coding session!\n// Share the room ID with your friend!');
-      setUserCount(users);
-      setJoined(true);
+    const codeRef = ref(db, `rooms/${roomId}/code`);
+    const unsubscribe = onValue(codeRef, (snapshot) => {
+      const data = snapshot.val();
+      if(data !== null) setCode(data);
     });
-  };
+
+    const usersRef = ref(db, `rooms/${roomId}/users`);
+    const unsubscribeUsers = onValue(usersRef, (snapshot) => {
+      const data = snapshot.val();
+      if(data !== null) setUserCount(Object.keys(data).length);
+    });
+
+    const userId = Math.random().toString(36).substring(2, 8);
+    set(ref(db, `rooms/${roomId}/users/${userId}`), true);
+
+    return () => {
+      unsubscribe();
+      unsubscribeUsers();
+    };
+  }, [joined, roomId]);
 
   const createRoom = () => {
     const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
     setRoomId(newRoomId);
-    socket.emit('join-room', newRoomId);
-    socket.on('room-joined', ({ code, users }) => {
-      setCode(code || '// Collaborative coding session!\n// Share the room ID with your friend!');
-      setUserCount(users);
-      setJoined(true);
-    });
+    setJoined(true);
+  };
+
+  const joinRoom = () => {
+    if(!roomId) return alert('Please enter a room ID!');
+    setJoined(true);
   };
 
   const handleCodeChange = (value) => {
     setCode(value);
-    socket.emit('code-change', { roomId, code: value });
+    set(ref(db, `rooms/${roomId}/code`), value);
   };
 
   const handleRun = async () => {
@@ -68,21 +67,21 @@ function Collab() {
       else if(data.stderr) setOutput('Error: ' + data.stderr);
       else setOutput('No output');
     } catch(err) {
-      setOutput('Error: ' + err.message);
+      setOutput('Run Code only works locally!');
     }
     setLoading(false);
   };
 
   if(!joined) {
     return (
-      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100vh',backgroundColor:'#1e1e2e',color:'white',fontFamily:'Arial'}}>
-        <h1 style={{fontSize:'2.5rem',marginBottom:'10px'}}>Collaborative Coding</h1>
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100vh',backgroundColor:'#1e1e2e',color:'white',fontFamily:'Inter, Arial'}}>
+        <h1 style={{fontSize:'2.5rem',marginBottom:'10px'}}>👥 Collaborative Coding</h1>
         <p style={{color:'#888',marginBottom:'40px'}}>Code together in real time!</p>
 
         <div style={{backgroundColor:'#2d2d3f',borderRadius:'15px',padding:'30px',width:'400px',textAlign:'center'}}>
           <button
             onClick={createRoom}
-            style={{width:'100%',padding:'12px',backgroundColor:'#7c3aed',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',marginBottom:'20px'}}>
+            style={{width:'100%',padding:'12px',backgroundColor:'#7c3aed',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',marginBottom:'20px',fontWeight:'600'}}>
             Create New Room
           </button>
 
@@ -97,7 +96,7 @@ function Collab() {
 
           <button
             onClick={joinRoom}
-            style={{width:'100%',padding:'12px',backgroundColor:'#22c55e',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem'}}>
+            style={{width:'100%',padding:'12px',backgroundColor:'#22c55e',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',fontWeight:'600'}}>
             Join Room
           </button>
         </div>
@@ -112,12 +111,12 @@ function Collab() {
   }
 
   return (
-    <div style={{backgroundColor:'#1e1e2e',minHeight:'100vh',color:'white',fontFamily:'Arial',padding:'30px'}}>
+    <div style={{backgroundColor:'#1e1e2e',minHeight:'100vh',color:'white',fontFamily:'Inter, Arial',padding:'30px'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-        <h1 style={{fontSize:'1.8rem'}}>Collaborative Coding</h1>
+        <h1 style={{fontSize:'1.8rem'}}>👥 Collaborative Coding</h1>
         <div style={{display:'flex',gap:'10px',alignItems:'center'}}>
           <span style={{backgroundColor:'#2d2d3f',padding:'8px 15px',borderRadius:'8px',fontSize:'0.9rem'}}>
-            Room: {roomId}
+            Room: <strong>{roomId}</strong>
           </span>
           <span style={{backgroundColor: userCount > 1 ? '#22c55e' : '#444',padding:'8px 15px',borderRadius:'8px',fontSize:'0.9rem'}}>
             👥 {userCount} User{userCount > 1 ? 's' : ''}
@@ -141,6 +140,9 @@ function Collab() {
       </div>
 
       <div style={{backgroundColor:'#2d2d3f',borderRadius:'15px',padding:'25px',marginBottom:'20px'}}>
+        <p style={{color:'#888',marginBottom:'10px',fontSize:'0.9rem'}}>
+          Share Room ID <strong style={{color:'#7c3aed'}}>{roomId}</strong> with your friend to code together!
+        </p>
         <Editor
           height="400px"
           language={language}
@@ -160,7 +162,7 @@ function Collab() {
         <button
           onClick={handleRun}
           disabled={loading}
-          style={{flex:1,padding:'12px',backgroundColor:'#3b82f6',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem'}}>
+          style={{flex:1,padding:'12px',backgroundColor:'#3b82f6',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontSize:'1rem',fontWeight:'600'}}>
           {loading ? 'Running...' : 'Run Code'}
         </button>
       </div>
